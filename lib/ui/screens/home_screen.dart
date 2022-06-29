@@ -15,17 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    super.initState();
-    getMovies();
-  }
-
-  void getMovies() async {
-    final dataProvider = Provider.of<DataRepository>(context, listen: false);
-    await dataProvider.getPopularMovies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final dataProvider = Provider.of<DataRepository>(context);
     return Scaffold(
