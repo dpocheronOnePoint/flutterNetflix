@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutternetflix/repositories/data_repository.dart';
 import 'package:flutternetflix/ui/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => DataRepository(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

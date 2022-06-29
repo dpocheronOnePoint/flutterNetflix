@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutternetflix/models/movie.dart';
+import 'package:flutternetflix/repositories/data_repository.dart';
 import 'package:flutternetflix/services/api_service.dart';
 import 'package:flutternetflix/utils/constant.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,24 +14,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Movie>? movies;
-
   @override
   void initState() {
     super.initState();
     getMovies();
   }
 
-  void getMovies() {
-    APIService().getPopularMovies(pageNumber: 1).then((movieList) {
-      setState(() {
-        movies = movieList;
-      });
-    });
+  void getMovies() async {
+    final dataProvider = Provider.of<DataRepository>(context, listen: false);
+    await dataProvider.getPopularMovies();
   }
 
   @override
   Widget build(BuildContext context) {
+    final dataProvider = Provider.of<DataRepository>(context);
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
@@ -41,10 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: 500,
             color: Colors.red,
-            child: movies == null
+            child: dataProvider.popularMovieList.isEmpty
                 ? const Center()
                 : Image.network(
-                    movies![0].posterURL(),
+                    dataProvider.popularMovieList[0].posterURL(),
                     fit: BoxFit.cover,
                   ),
           ),
@@ -65,11 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 110,
                     margin: const EdgeInsets.only(right: 8),
                     color: Colors.yellow,
-                    child: movies == null
+                    child: dataProvider.popularMovieList.isEmpty
                         ? Center(
                             child: Text(index.toString()),
                           )
-                        : Image.network(movies![index].posterURL(),
+                        : Image.network(
+                            dataProvider.popularMovieList[index].posterURL(),
                             fit: BoxFit.cover),
                   );
                 }),
