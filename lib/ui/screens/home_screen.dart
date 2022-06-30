@@ -32,17 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'Les tendances actuelles',
               movieList: dataProvider.popularMovieList,
               imageHeight: 160,
-              imageWidth: 110),
-          const MovieCategory(
-              title: 'Actuellement au cinéma',
-              movieList: [],
-              imageHeight: 320,
-              imageWidth: 220),
-          const MovieCategory(
-              title: 'Bientôt disponible',
-              movieList: [],
-              imageHeight: 160,
-              imageWidth: 110),
+              imageWidth: 110,
+              callBack: dataProvider.getPopularMovies),
+          // const MovieCategory(
+          //     title: 'Actuellement au cinéma',
+          //     movieList: [],
+          //     imageHeight: 320,
+          //     imageWidth: 220),
+          // const MovieCategory(
+          //     title: 'Bientôt disponible',
+          //     movieList: [],
+          //     imageHeight: 160,
+          //     imageWidth: 110),
         ]));
   }
 }

@@ -7,20 +7,27 @@ class DataRepository with ChangeNotifier {
   final APIService apiService = APIService();
   final List<Movie> _popularMovieList = [];
   int popularMoviePageIndex = 1;
+  bool wsAlreadyInProgress = false;
 
   // Getters
   List<Movie> get popularMovieList => _popularMovieList;
 
   Future<void> getPopularMovies() async {
-    try {
-      List<Movie> movies =
-          await apiService.getPopularMovies(pageNumber: popularMoviePageIndex);
-      _popularMovieList.addAll(movies);
-      popularMoviePageIndex++;
-      notifyListeners();
-    } on Response catch (response) {
-      print("Error: ${response.statusCode}");
-      rethrow;
+    if (!wsAlreadyInProgress) {
+      wsAlreadyInProgress = true;
+      print("WS Calls !");
+      try {
+        List<Movie> movies = await apiService.getPopularMovies(
+            pageNumber: popularMoviePageIndex);
+        _popularMovieList.addAll(movies);
+        popularMoviePageIndex++;
+        notifyListeners();
+        wsAlreadyInProgress = false;
+      } on Response catch (response) {
+        print("Error: ${response.statusCode}");
+        wsAlreadyInProgress = false;
+        rethrow;
+      }
     }
   }
 

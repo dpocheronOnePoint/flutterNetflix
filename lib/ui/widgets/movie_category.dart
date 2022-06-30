@@ -10,13 +10,15 @@ class MovieCategory extends StatelessWidget {
   final List<Movie> movieList;
   final double imageHeight;
   final double imageWidth;
+  final Function callBack;
 
   const MovieCategory(
       {Key? key,
       required this.title,
       required this.movieList,
       required this.imageHeight,
-      required this.imageWidth})
+      required this.imageWidth,
+      required this.callBack})
       : super(key: key);
 
   @override
@@ -33,20 +35,32 @@ class MovieCategory extends StatelessWidget {
         const SizedBox(height: 15),
         SizedBox(
           height: imageHeight,
-          child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    width: imageWidth,
-                    margin: const EdgeInsets.only(right: 8),
-                    color: Colors.grey,
-                    child: movieList.isEmpty
-                        ? Center(
-                            child: Text(index.toString()),
-                          )
-                        : MovieCard(movie: movieList[index]));
-              }),
+          child: NotificationListener<ScrollNotification>(
+            // Method to check if the user has scroll 2/3 of the list
+            // To load the next page
+            onNotification: (ScrollNotification notification) {
+              final currentPosition = notification.metrics.pixels;
+              final maxPosition = notification.metrics.maxScrollExtent;
+              if (currentPosition >= maxPosition * 2 / 3) {
+                callBack();
+              }
+              return true;
+            },
+            child: ListView.builder(
+                itemCount: movieList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      width: imageWidth,
+                      margin: const EdgeInsets.only(right: 8),
+                      color: Colors.grey,
+                      child: movieList.isEmpty
+                          ? Center(
+                              child: Text(index.toString()),
+                            )
+                          : MovieCard(movie: movieList[index]));
+                }),
+          ),
         ),
       ],
     );
