@@ -1,6 +1,7 @@
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutternetflix/models/movie.dart';
+import 'package:flutternetflix/ui/screens/movie_details_screen.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -8,7 +9,18 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(movie.posterURL(), fit: BoxFit.cover);
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return MovieDetailsScreen(movie: movie);
+              },
+            ),
+          );
+        },
+        child: Image.network(movie.posterURL(), fit: BoxFit.cover));
 
     // return CachedNetworkImage(
     //   imageUrl: movie.posterURL(),
