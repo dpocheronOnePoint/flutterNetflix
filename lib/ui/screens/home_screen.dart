@@ -40,11 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
               imageHeight: 320,
               imageWidth: 220,
               callBack: dataProvider.getNowPlayingMovies),
-          // const MovieCategory(
-          //     title: 'Bientôt disponible',
-          //     movieList: [],
-          //     imageHeight: 160,
-          //     imageWidth: 110),
+          MovieCategory(
+              title: 'Bientôt disponible',
+              movieList: dataProvider.upcomingMovieList,
+              imageHeight: 160,
+              imageWidth: 110,
+              callBack: dataProvider.getUpcomingMovies),
         ]));
   }
 }

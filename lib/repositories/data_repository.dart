@@ -5,19 +5,28 @@ import 'package:flutternetflix/services/api_service.dart';
 
 class DataRepository with ChangeNotifier {
   final APIService apiService = APIService();
+
+  // PopularMovies
   final List<Movie> _popularMovieList = [];
   int popularMoviePageIndex = 1;
-  bool wsAlreadyInProgress = false;
+  bool popularWsAlreadyInProgress = false;
+  List<Movie> get popularMovieList => _popularMovieList;
+
+  // NowPlayingMovies
   final List<Movie> _nowPlayoingMovieList = [];
   int nowPlayingMoviePageIndex = 1;
-
-  // Getters
-  List<Movie> get popularMovieList => _popularMovieList;
+  bool nowPlayingWsAlreadyInProgress = false;
   List<Movie> get nowPlayingMovieList => _nowPlayoingMovieList;
 
+  // UpcomingMovies
+  final List<Movie> _upcomingMovieList = [];
+  int upcomingMoviePageIndex = 1;
+  bool upcomingWsAlreadyInProgress = false;
+  List<Movie> get upcomingMovieList => _upcomingMovieList;
+
   Future<void> getPopularMovies() async {
-    if (!wsAlreadyInProgress) {
-      wsAlreadyInProgress = true;
+    if (!popularWsAlreadyInProgress) {
+      popularWsAlreadyInProgress = true;
       print("WS Calls !");
       try {
         List<Movie> movies = await apiService.getPopularMovies(
@@ -25,28 +34,46 @@ class DataRepository with ChangeNotifier {
         _popularMovieList.addAll(movies);
         popularMoviePageIndex++;
         notifyListeners();
-        wsAlreadyInProgress = false;
+        popularWsAlreadyInProgress = false;
       } on Response catch (response) {
         print("Error: ${response.statusCode}");
-        wsAlreadyInProgress = false;
+        popularWsAlreadyInProgress = false;
         rethrow;
       }
     }
   }
 
   Future<void> getNowPlayingMovies() async {
-    if (!wsAlreadyInProgress) {
-      wsAlreadyInProgress = true;
+    if (!nowPlayingWsAlreadyInProgress) {
+      nowPlayingWsAlreadyInProgress = true;
       try {
         List<Movie> movies = await apiService.getNowPlayingMovies(
             pageNumber: nowPlayingMoviePageIndex);
         _nowPlayoingMovieList.addAll(movies);
         nowPlayingMoviePageIndex++;
         notifyListeners();
-        wsAlreadyInProgress = false;
+        nowPlayingWsAlreadyInProgress = false;
       } on Response catch (response) {
         print("Error: ${response.statusCode}");
-        wsAlreadyInProgress = false;
+        nowPlayingWsAlreadyInProgress = false;
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> getUpcomingMovies() async {
+    if (!upcomingWsAlreadyInProgress) {
+      upcomingWsAlreadyInProgress = true;
+      try {
+        List<Movie> movies = await apiService.getUpcomingMovies(
+            pageNumber: upcomingMoviePageIndex);
+        _upcomingMovieList.addAll(movies);
+        upcomingMoviePageIndex++;
+        notifyListeners();
+        upcomingWsAlreadyInProgress = false;
+      } on Response catch (response) {
+        print("Error: ${response.statusCode}");
+        upcomingWsAlreadyInProgress = false;
         rethrow;
       }
     }
@@ -55,5 +82,6 @@ class DataRepository with ChangeNotifier {
   Future<void> initData() async {
     await getPopularMovies();
     await getNowPlayingMovies();
+    await getUpcomingMovies();
   }
 }
