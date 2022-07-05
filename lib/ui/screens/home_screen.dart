@@ -34,11 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
               imageHeight: 160,
               imageWidth: 110,
               callBack: dataProvider.getPopularMovies),
-          // const MovieCategory(
-          //     title: 'Actuellement au cinéma',
-          //     movieList: [],
-          //     imageHeight: 320,
-          //     imageWidth: 220),
+          MovieCategory(
+              title: 'Actuellement au cinéma',
+              movieList: dataProvider.nowPlayingMovieList,
+              imageHeight: 320,
+              imageWidth: 220,
+              callBack: dataProvider.getNowPlayingMovies),
           // const MovieCategory(
           //     title: 'Bientôt disponible',
           //     movieList: [],
