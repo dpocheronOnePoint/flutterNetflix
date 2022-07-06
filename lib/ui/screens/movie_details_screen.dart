@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutternetflix/models/movie.dart';
 import 'package:flutternetflix/repositories/data_repository.dart';
+import 'package:flutternetflix/ui/widgets/action_button.dart';
+import 'package:flutternetflix/ui/widgets/movie_info.dart';
 import 'package:flutternetflix/utils/constant.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -42,14 +45,30 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           ? Center(
               child: SpinKitFadingCircle(color: kPrimaryColor, size: 20),
             )
-          : ListView(
-              children: [
-                Container(
-                  height: 220,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.red,
-                )
-              ],
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: [
+                  Container(
+                    height: 220,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.red,
+                  ),
+                  MovieInfo(movie: updatedMovie!),
+                  const SizedBox(height: 10),
+                  ActionButton(
+                      label: 'Lecture',
+                      icon: Icons.play_arrow,
+                      bgColor: Colors.white,
+                      color: kBackgroundColor),
+                  const SizedBox(height: 20),
+                  ActionButton(
+                      label: 'Télécharger',
+                      icon: Icons.download,
+                      bgColor: Colors.grey.withOpacity(0.3),
+                      color: Colors.white)
+                ],
+              ),
             ),
     );
   }

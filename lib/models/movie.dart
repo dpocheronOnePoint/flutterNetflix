@@ -9,7 +9,7 @@ class Movie {
   final String description;
   final String? posterPath;
   final List<String>? genres;
-  final String? releaseData;
+  final String? releaseDate;
   final double? vote;
 
   Movie(
@@ -18,7 +18,7 @@ class Movie {
       required this.description,
       this.posterPath,
       this.genres,
-      this.releaseData,
+      this.releaseDate,
       this.vote});
 
   Movie copyWith(
@@ -27,7 +27,7 @@ class Movie {
       String? description,
       String? posterPath,
       List<String>? genres,
-      String? releaseData,
+      String? releaseDate,
       double? vote}) {
     return Movie(
         id: id ?? this.id,
@@ -35,7 +35,7 @@ class Movie {
         description: description ?? this.description,
         posterPath: posterPath ?? this.posterPath,
         genres: genres ?? this.genres,
-        releaseData: releaseData ?? this.releaseData,
+        releaseDate: releaseDate ?? this.releaseDate,
         vote: vote ?? this.vote);
   }
 

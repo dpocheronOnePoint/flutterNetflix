@@ -88,10 +88,9 @@ class APIService {
       }).toList();
 
       Movie updatedMovie = movie.copyWith(
-        genres: genreList,
-        // releaseData: data['release_date'],
-        // vote: data['vote_average']
-      );
+          genres: genreList,
+          releaseDate: data['release_date'],
+          vote: data['vote_average']);
 
       return updatedMovie;
     } else {
